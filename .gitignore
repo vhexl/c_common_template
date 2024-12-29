@@ -1,0 +1,13 @@
+# build directory
+build/
+
+# vscode about(need include cmake variants file)
+.vscode/*
+!cmake-variants.yaml
+*.code-workspace
+
+# python visual env
+.venv/
+
+# misc
+.DS_Store

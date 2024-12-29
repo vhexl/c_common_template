@@ -1,0 +1,21 @@
+---
+BasedOnStyle: Microsoft
+Language: Cpp
+
+# for more conf, you can ref: https://clang.llvm.org/docs/ClangFormatStyleOptions.html
+UseTab: Never
+IndentWidth: 4
+TabWidth: 4
+ColumnLimit: 80
+AccessModifierOffset: -4
+NamespaceIndentation: All
+FixNamespaceComments: false
+BreakBeforeBraces: Linux
+
+AllowShortIfStatementsOnASingleLine: false
+AllowShortLoopsOnASingleLine: false
+AllowShortBlocksOnASingleLine: false
+IndentCaseLabels: true
+SortIncludes: false
+AlignConsecutiveMacros: AcrossEmptyLines
+AlignConsecutiveAssignments: Consecutive
