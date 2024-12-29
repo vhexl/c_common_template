@@ -30,12 +30,18 @@ jobs:
           - os: windows-latest
             c_compiler: cl
             cpp_compiler: cl
+            with:
+              python-version: '3.10'
           - os: ubuntu-latest
             c_compiler: gcc
             cpp_compiler: g++
+            with:
+              python-version: '3.10'
           - os: ubuntu-latest
             c_compiler: clang
             cpp_compiler: clang++
+            with:
+              python-version: '3.10'
         exclude:
           - os: windows-latest
             c_compiler: gcc
