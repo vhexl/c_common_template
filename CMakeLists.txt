@@ -16,6 +16,21 @@ if(NOT EXISTS ${CMAKE_CURRENT_LIST_DIR}/.git)
     endif()
 endif()
 
+# add unittest framework
+if(NOT EXISTS ${CMAKE_CURRENT_LIST_DIR}/test/Unity)
+    set(UNITTEST_FRAMEWORK_REPO https://github.com/ThrowTheSwitch/Unity.git)
+    execute_process(
+        COMMAND git submodule add ${UNITTEST_FRAMEWORK_REPO} test/Unity
+        WORKING_DIRECTORY ${CMAKE_CURRENT_LIST_DIR}
+        RESULT_VARIABLE add_submodule_result
+    )
+    if(add_submodule_result)
+        message(FATAL_ERROR "Failed to add submodule")
+    else()
+        message(STATUS "Added submodule")
+    endif()
+endif()
+
 # create python virtual environment
 if(NOT EXISTS ${CMAKE_CURRENT_LIST_DIR}/.venv/bin/python)
     find_package(Python3 COMPONENTS Interpreter)
