@@ -17,10 +17,10 @@ if(NOT EXISTS ${CMAKE_CURRENT_LIST_DIR}/.git)
 endif()
 
 # add unittest framework
-if(NOT EXISTS ${CMAKE_CURRENT_LIST_DIR}/test/Unity)
+if(NOT EXISTS ${CMAKE_CURRENT_LIST_DIR}/tests/Unity)
     set(UNITTEST_FRAMEWORK_REPO https://github.com/ThrowTheSwitch/Unity.git)
     execute_process(
-        COMMAND git submodule add ${UNITTEST_FRAMEWORK_REPO} test/Unity
+        COMMAND git submodule add ${UNITTEST_FRAMEWORK_REPO} tests/Unity
         WORKING_DIRECTORY ${CMAKE_CURRENT_LIST_DIR}
         RESULT_VARIABLE add_submodule_result
     )
@@ -87,7 +87,7 @@ if(CMAKE_PROJECT_NAME STREQUAL PROJECT_NAME)
     include(CTest)
 endif()
 if(CMAKE_PROJECT_NAME STREQUAL PROJECT_NAME AND BUILD_TESTING)
-    add_subdirectory(test)
+    add_subdirectory(tests)
 endif()
 
 # even commented it, coverage utils still works great
