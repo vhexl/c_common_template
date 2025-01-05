@@ -1,0 +1,8 @@
+# config for c_common_template
+menu "template config"
+
+config TEMPLATE_CONFIG_ITEM
+    hex "Template configuration item"
+    default 0xFF
+
+endmenu

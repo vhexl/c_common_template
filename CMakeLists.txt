@@ -2,11 +2,23 @@ cmake_minimum_required(VERSION 3.20)
 
 project(c_common_template)
 
+set(ROOT_DIR ${CMAKE_CURRENT_LIST_DIR})
+set(SRC_DIR ${ROOT_DIR}/src)
+set(BUILD_DIR ${ROOT_DIR}/build)
+set(GIT_DIR ${ROOT_DIR}/.git)
+set(VENV_DIR ${ROOT_DIR}/.venv)
+set(TOOLS_DIR ${ROOT_DIR}/tools)
+set(TESTS_DIR ${ROOT_DIR}/tests)
+
+set(REQUIREMENTS_FILE ${ROOT_DIR}/requirements.txt)
+
+set(UNITTEST_FRAMEWORK_REPO https://github.com/ThrowTheSwitch/Unity.git)
+
 # initialize git
-if(NOT EXISTS ${CMAKE_CURRENT_LIST_DIR}/.git)
+if(NOT EXISTS ${ROOT_DIR}/.git)
     execute_process(
         COMMAND git init
-        WORKING_DIRECTORY ${CMAKE_CURRENT_LIST_DIR}
+        WORKING_DIRECTORY ${ROOT_DIR}
         RESULT_VARIABLE git_init_result
     )
     if(git_init_result)
@@ -17,11 +29,10 @@ if(NOT EXISTS ${CMAKE_CURRENT_LIST_DIR}/.git)
 endif()
 
 # add unittest framework
-if(NOT EXISTS ${CMAKE_CURRENT_LIST_DIR}/tests/Unity)
-    set(UNITTEST_FRAMEWORK_REPO https://github.com/ThrowTheSwitch/Unity.git)
+if(NOT EXISTS ${TESTS_DIR}/Unity)
     execute_process(
-        COMMAND git submodule add ${UNITTEST_FRAMEWORK_REPO} tests/Unity
-        WORKING_DIRECTORY ${CMAKE_CURRENT_LIST_DIR}
+        COMMAND git submodule add ${UNITTEST_FRAMEWORK_REPO}
+        WORKING_DIRECTORY ${TESTS_DIR}
         RESULT_VARIABLE add_submodule_result
     )
     if(add_submodule_result)
@@ -32,10 +43,11 @@ if(NOT EXISTS ${CMAKE_CURRENT_LIST_DIR}/tests/Unity)
 endif()
 
 # create python virtual environment
-if(NOT EXISTS ${CMAKE_CURRENT_LIST_DIR}/.venv/bin/python)
+if(NOT EXISTS ${VENV_DIR}/bin/python)
     find_package(Python3 COMPONENTS Interpreter)
     execute_process(
-        COMMAND ${Python3_EXECUTABLE} -m venv ${CMAKE_CURRENT_LIST_DIR}/.venv
+        COMMAND ${Python3_EXECUTABLE} -m venv .venv
+        WORKING_DIRECTORY ${ROOT_DIR}
         RESULT_VARIABLE venv_result
     )
     if(venv_result)
@@ -45,15 +57,14 @@ if(NOT EXISTS ${CMAKE_CURRENT_LIST_DIR}/.venv/bin/python)
     endif()
 endif()
 
+# set python virtual environment
+set(ENV{VIRTUAL_ENV} ${VENV_DIR})
+set(Python3_FIND_VIRTUALENV FIRST)
+unset(Python3_EXECUTABLE)
+find_package(Python3 COMPONENTS Interpreter)
+
 # install dependencies in virtual environment
-if(NOT EXISTS ${CMAKE_CURRENT_LIST_DIR}/.git/hooks/pre-commit)
-    set(ENV{VIRTUAL_ENV} ${CMAKE_CURRENT_LIST_DIR}/.venv)
-    set(Python3_FIND_VIRTUALENV FIRST)
-    unset(Python3_EXECUTABLE)
-    find_package(Python3 COMPONENTS Interpreter)
-
-    set(REQUIREMENTS_FILE ${CMAKE_CURRENT_LIST_DIR}/requirements.txt)
-
+if(NOT EXISTS ${GIT_DIR}/hooks/pre-commit)
     execute_process(
         COMMAND ${Python3_EXECUTABLE} -m pip install -r ${REQUIREMENTS_FILE}
         RESULT_VARIABLE pip_result
@@ -81,8 +92,29 @@ if(CMAKE_C_COMPILER_ID MATCHES "MSVC")
     add_compile_options(/wd5045)
 endif()
 
+# add source directory
 add_subdirectory(src/)
 
+# add kconfig support
+# add_custom_command(
+#     OUTPUT ${BUILD_DIR}/.config ${BUILD_DIR}/config.h
+#     COMMAND ${Python3_EXECUTABLE} ${TOOLS_DIR}/kconfig/kconfig.py
+#     DEPENDS ${ROOT_DIR}/Kconfig
+# )
+
+add_custom_command(
+    OUTPUT ${ROOT_DIR}/.config ${BUILD_DIR}/config.h
+    COMMAND ${Python3_EXECUTABLE} ${TOOLS_DIR}/kconfig/kconfig.py
+    WORKING_DIRECTORY ${ROOT_DIR}
+)
+
+add_custom_target(
+    config ALL
+    DEPENDS ${ROOT_DIR}/.config ${BUILD_DIR}/config.h
+    COMMENT "Generating configuration"
+)
+
+# add test
 if(CMAKE_PROJECT_NAME STREQUAL PROJECT_NAME)
     include(CTest)
 endif()
@@ -91,6 +123,8 @@ if(CMAKE_PROJECT_NAME STREQUAL PROJECT_NAME AND BUILD_TESTING)
 endif()
 
 # even commented it, coverage utils still works great
-configure_file("./CTestCustom.cmake.in"
-                ${CMAKE_BINARY_DIR}/CTestCustom.cmake
-                @ONLY)
+configure_file(
+    CTestCustom.cmake.in
+    CTestCustom.cmake
+    @ONLY
+)
