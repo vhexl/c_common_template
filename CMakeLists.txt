@@ -121,10 +121,3 @@ endif()
 if(CMAKE_PROJECT_NAME STREQUAL PROJECT_NAME AND BUILD_TESTING)
     add_subdirectory(tests)
 endif()
-
-# even commented it, coverage utils still works great
-configure_file(
-    CTestCustom.cmake.in
-    CTestCustom.cmake
-    @ONLY
-)
