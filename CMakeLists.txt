@@ -43,7 +43,7 @@ if(NOT EXISTS ${TESTS_DIR}/Unity)
 endif()
 
 # create python virtual environment
-if(NOT EXISTS ${VENV_DIR}/bin/python)
+if(NOT EXISTS ${VENV_DIR}/pyvenv.cfg)
     find_package(Python3 COMPONENTS Interpreter)
     execute_process(
         COMMAND ${Python3_EXECUTABLE} -m venv .venv
