@@ -64,26 +64,16 @@ unset(Python3_EXECUTABLE)
 find_package(Python3 COMPONENTS Interpreter)
 
 # install dependencies in virtual environment
-if(NOT EXISTS ${GIT_DIR}/hooks/pre-commit)
-    execute_process(
-        COMMAND ${Python3_EXECUTABLE} -m pip install -r ${REQUIREMENTS_FILE}
-        RESULT_VARIABLE pip_result
-    )
-    if(pip_result)
-        message(FATAL_ERROR "Failed to install requirements.txt")
-    else()
-        message(STATUS "Installed requirements.txt")
-    endif()
-    execute_process(
-        COMMAND ${Python3_EXECUTABLE} -m pre_commit install
-        RESULT_VARIABLE precommit_result
-      )
-    if(precommit_result)
-        message(FATAL_ERROR "Failed to install pre-commit hooks")
-    else()
-        message(STATUS "Installed pre-commit hooks")
-    endif()
+execute_process(
+    COMMAND ${Python3_EXECUTABLE} -m pip install -r ${REQUIREMENTS_FILE} -q
+    RESULT_VARIABLE pip_result
+)
+if(pip_result)
+    message(FATAL_ERROR "Failed to install requirements.txt")
+else()
+    message(STATUS "Installed requirements.txt")
 endif()
+
 
 
 # MSVC compiler definitions
