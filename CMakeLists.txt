@@ -29,7 +29,7 @@ if(NOT EXISTS ${ROOT_DIR}/.git)
 endif()
 
 # add unittest framework
-if(NOT EXISTS ${TESTS_DIR}/Unity)
+if(NOT EXISTS ${TESTS_DIR}/Unity/CMakeLists.txt)
     execute_process(
         COMMAND git submodule add ${UNITTEST_FRAMEWORK_REPO}
         WORKING_DIRECTORY ${TESTS_DIR}
