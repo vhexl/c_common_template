@@ -11,22 +11,27 @@
  */
 
 #include <unity.h>
+#include <unity_memory.h>
 
 #include <stdio.h>
 
 // Is run before every test, put unit init calls here.
 void setUp(void)
 {
+    UnityMalloc_StartTest();
 }
 
 // Is run after every test, put unit clean-up calls here.
 void tearDown(void)
 {
+    UnityMalloc_EndTest();
 }
 
 void test_case_template(void)
 {
+    void *p = malloc(1);
     printf("test_case_template\n");
+    free(p);
 }
 
 int main(void)
