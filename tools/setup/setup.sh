@@ -10,12 +10,16 @@ echo "Setting up the environment for the project..."
 # Unity repository URL variable
 UNITY_REPO_URL="https://github.com/ThrowTheSwitch/Unity.git"
 
-# remove .git and initial the git repository
+# Remove .git and tests/Unity
 if [ -d .git ]; then
     rm -rf .git
 fi
-git init
+if [ -d tests/Unity ]; then
+    rm -rf tests/Unity
+fi
 
+# Initial the git repository
+git init
 # Add submodules Unity
 git submodule add ${UNITY_REPO_URL} tests/Unity
 
