@@ -1,3 +1,5 @@
+[![codecov](https://codecov.io/gh/vhexl/c_common_template/branch/main/graph/badge.svg?token=R0V7I810YW)](https://codecov.io/gh/vhexl/c_common_template)
+
 # C Common Template
 C project template for my self.
 
