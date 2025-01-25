@@ -1,6 +1,9 @@
 cmake_minimum_required(VERSION 3.20)
 
-project(c_common_template)
+project(c_common_template
+        VERSION 0.0.1
+        DESCRIPTION "A template project for C development"
+        LANGUAGES C)
 
 set(ROOT_DIR ${CMAKE_CURRENT_LIST_DIR})
 set(SRC_DIR ${ROOT_DIR}/src)
