@@ -4,17 +4,19 @@ from kconfiglib import Kconfig
 
 
 def generate_config(kconfig_file, config_in, config_out, header_out):
-    kconf = Kconfig(kconfig_file)
+    # delete the old config file
+    if os.path.isfile(header_out):
+        os.remove(header_out)
 
+    kconf = Kconfig(kconfig_file)
     # Load config files(.config exists)
     if os.path.isfile(config_in):
-        print(kconf.load_config(config_in))
+        kconf.load_config(config_in)
 
     # Write merged config
-    print(kconf.write_config(config_out))
-
+    kconf.write_config(config_out)
     # Write headers
-    print(kconf.write_autoconf(header_out))
+    kconf.write_autoconf(header_out)
 
     with open(header_out, 'r+') as header_file:
         content = header_file.read()
@@ -42,7 +44,7 @@ def generate_config(kconfig_file, config_in, config_out, header_out):
         header_file.write("#endif\r\n")
 
 
-def main(argc: int, argv: list[str]):
+def main(argc: int, argv: list[str]) -> int:
     kconfig_file = argv[1] if argc > 1 else 'Kconfig'
     config_in = argv[2] if argc > 2 else '.config'
     config_out = argv[3] if argc > 3 else '.config'
@@ -52,4 +54,8 @@ def main(argc: int, argv: list[str]):
 
 
 if __name__ == "__main__":
-    main(len(sys.argv), sys.argv)
+    try:
+        main(len(sys.argv), sys.argv)
+    except Exception as e:
+        print(f"An unexpected error occurred: {e}")
+        sys.exit(1)

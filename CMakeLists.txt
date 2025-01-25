@@ -20,20 +20,22 @@ if(CMAKE_C_COMPILER_ID MATCHES "MSVC")
     add_compile_options(/wd5045)
 endif()
 
-# add source directory
-add_subdirectory(src/)
-
 add_custom_command(
-    OUTPUT ${ROOT_DIR}/.config ${BUILD_DIR}/config.h
+    OUTPUT ${ROOT_DIR}/.config
     COMMAND ${Python3_EXECUTABLE} ${TOOLS_DIR}/kconfig/kconfig.py
     WORKING_DIRECTORY ${ROOT_DIR}
+    DEPENDS ${ROOT_DIR}/Kconfig ${TOOLS_DIR}/kconfig/kconfig.py
 )
 
 add_custom_target(
-    config ALL
-    DEPENDS ${ROOT_DIR}/.config ${BUILD_DIR}/config.h
-    COMMENT "Generating configuration"
+    generate_config ALL
+    COMMAND ${Python3_EXECUTABLE} ${TOOLS_DIR}/kconfig/kconfig.py
+    WORKING_DIRECTORY ${ROOT_DIR}
+    DEPENDS ${ROOT_DIR}/.config ${TOOLS_DIR}/kconfig/kconfig.py
 )
+
+# add source directory
+add_subdirectory(src/)
 
 # add test
 if(CMAKE_PROJECT_NAME STREQUAL PROJECT_NAME)
