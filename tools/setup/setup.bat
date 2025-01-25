@@ -21,7 +21,7 @@ git init
 git submodule add %UNITY_REPO_URL% tests/Unity
 
 :: Create Python virtual environment
-python3 -m venv .venv
+python -m venv .venv
 call .venv\Scripts\activate
 pip install -r requirements.txt
 
