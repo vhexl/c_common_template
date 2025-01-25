@@ -13,7 +13,7 @@ set(TOOLS_DIR ${ROOT_DIR}/tools)
 
 # set python virtual environment
 set(ENV{VIRTUAL_ENV} ${VENV_DIR})
-set(Python3_FIND_VIRTUALENV FIRST)
+set(Python3_FIND_VIRTUALENV ONLY)
 unset(Python3_EXECUTABLE)
 find_package(Python3 COMPONENTS Interpreter)
 
