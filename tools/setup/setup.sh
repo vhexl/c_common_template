@@ -17,7 +17,7 @@ fi
 git init
 
 # Add submodules Unity
-git submodule add ${UNITY_REPO_URL} tests/unity
+git submodule add ${UNITY_REPO_URL} tests/Unity
 
 # create python virtual environment
 python3 -m venv .venv

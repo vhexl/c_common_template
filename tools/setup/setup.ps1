@@ -11,7 +11,7 @@ if (Test-Path -Path .git) {
 git init
 
 # Add submodules Unity
-git submodule add $UNITY_REPO_URL tests/unity
+git submodule add $UNITY_REPO_URL tests/Unity
 
 # Create Python virtual environment
 python3 -m venv .venv
