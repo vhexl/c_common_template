@@ -25,7 +25,10 @@ jobs:
 
     - name: Setup environment
       shell: bash
-      run: chmod +x ./tools/setup/setup.sh && ./tools/setup/setup.sh
+      run: |
+        chmod +x ./tools/setup/setup.sh 
+        ./tools/setup/setup.sh
+        echo PATH=$PATH >> $GITHUB_ENV
 
     - name: Set reusable strings
       id: strings
