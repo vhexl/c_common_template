@@ -33,6 +33,10 @@ jobs:
       with:
         key: venv-${{ runner.os }}-${{ steps.setup_python.outputs.python-version }}-${{ hashFiles('requirements.txt') }}
         path: .venv
+    - name: 'Print python version1'
+      run: |
+        which python
+        python --version
     - name: Setup environment
       shell: bash
       run: |
@@ -42,6 +46,13 @@ jobs:
         echo "$VIRTUAL_ENV/bin" >> $GITHUB_PATH
         echo "VIRTUAL_ENV=$VIRTUAL_ENV" >> $GITHUB_ENV
       working-directory: ${{ github.workspace }}
+    - name: 'Print python version2'
+      run: |
+        which python
+        python --version
+        source ./.venv/bin/activate
+        which python
+        python --version
     - name: Saved cached virtualenv
       uses: actions/cache/save@v4
       with:
