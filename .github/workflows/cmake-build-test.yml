@@ -30,6 +30,7 @@ jobs:
         echo "build-output-dir=${{ github.workspace }}/build" >> "$GITHUB_OUTPUT"
     - name: Restore cached virtualenv
       uses: actions/cache/restore@v4
+      id: restore_cache
       with:
         key: venv-${{ runner.os }}-${{ steps.setup_python.outputs.python-version }}-${{ hashFiles('requirements.txt') }}
         path: .venv
@@ -43,6 +44,7 @@ jobs:
       working-directory: ${{ github.workspace }}
     - name: Saved cached virtualenv
       uses: actions/cache/save@v4
+      if: steps.restore_cache.outputs.cache-hit != 'true'
       with:
         key: venv-${{ runner.os }}-${{ steps.setup_python.outputs.python-version }}-${{ hashFiles('requirements.txt') }}
         path: .venv
