@@ -16,9 +16,9 @@ converage:
       short: No coverage
       long: No coverage
     converage:
-      short: Coverage
-      long: Coverage
+      short: Coverage(Only GCC)
+      long: Coverage(Only GCC)
       settings:
-        CMAKE_CXX_FLAGS: "-g -O0 --coverage -ftest-coverage -fprofile-arcs -fprofile-exclude-files=./test/*"
-        CMAKE_C_FLAGS: "-g -O0 --coverage -ftest-coverage -fprofile-arcs -fprofile-exclude-files=./test/*"
+        CMAKE_CXX_FLAGS: "-g -O0 --coverage -ftest-coverage -fprofile-arcs -fprofile-exclude-files=./tests/*"
+        CMAKE_C_FLAGS: "-g -O0 --coverage -ftest-coverage -fprofile-arcs -fprofile-exclude-files=./tests/*"
         CMAKE_EXE_LINKER_FLAGS: "--coverage"
