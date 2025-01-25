@@ -29,9 +29,9 @@ void tearDown(void)
 
 void test_case_template(void)
 {
-    void *p = malloc(1);
+    void *p = unity_malloc(1);
     printf("test_case_template\n");
-    free(p);
+    unity_free(p);
 }
 
 int main(void)

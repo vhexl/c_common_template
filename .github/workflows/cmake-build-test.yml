@@ -13,7 +13,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        build_type: [Release]
+        build_type: [Debug]
         c_compiler: [gcc]
         cpp_compiler: [g++]
 
@@ -28,12 +28,14 @@ jobs:
       shell: bash
       run: |
         echo "build-output-dir=${{ github.workspace }}/build" >> "$GITHUB_OUTPUT"
+
     - name: Restore cached virtualenv
       uses: actions/cache/restore@v4
       id: restore_cache
       with:
         key: venv-${{ runner.os }}-${{ steps.setup_python.outputs.python-version }}-${{ hashFiles('requirements.txt') }}
         path: .venv
+    
     - name: Setup environment
       shell: bash
       run: |
@@ -42,6 +44,7 @@ jobs:
         echo "$VIRTUAL_ENV/bin" >> $GITHUB_PATH
         echo "VIRTUAL_ENV=$VIRTUAL_ENV" >> $GITHUB_ENV
       working-directory: ${{ github.workspace }}
+    
     - name: Saved cached virtualenv
       uses: actions/cache/save@v4
       if: steps.restore_cache.outputs.cache-hit != 'true'
@@ -49,11 +52,15 @@ jobs:
         key: venv-${{ runner.os }}-${{ steps.setup_python.outputs.python-version }}-${{ hashFiles('requirements.txt') }}
         path: .venv
     - name: Configure CMake
+
       shell: bash
       run: >
         Python3_ROOT_DIR= cmake -B ${{ steps.strings.outputs.build-output-dir }}
         -DCMAKE_CXX_COMPILER=${{ matrix.cpp_compiler }}
         -DCMAKE_C_COMPILER=${{ matrix.c_compiler }}
+        -DCMAKE_C_FLAGS="-g -O0 --coverage -ftest-coverage -fprofile-arcs -fprofile-exclude-files=./tests/*"
+        -DCMAKE_CXX_FLAGS="-g -O0 --coverage -ftest-coverage -fprofile-arcs -fprofile-exclude-files=./tests/*"
+        -DCMAKE_EXE_LINKER_FLAGS="--coverage"
         -DCMAKE_BUILD_TYPE=${{ matrix.build_type }}
         -S ${{ github.workspace }}
 
@@ -65,3 +72,10 @@ jobs:
       shell: bash
       working-directory: ${{ steps.strings.outputs.build-output-dir }}
       run: ctest --build-config ${{ matrix.build_type }}
+
+    - name: Upload coverage reports to Codecov
+      uses: codecov/codecov-action@v5
+      with:
+        gcov_include: 'build/*'
+        token: ${{ secrets.CODECOV_TOKEN }}
+        slug: vhexl/c_common_template
