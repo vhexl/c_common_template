@@ -1,15 +1,21 @@
+# C Common Template
+
 [![codecov](https://codecov.io/gh/vhexl/c_common_template/branch/main/graph/badge.svg?token=R0V7I810YW)](https://codecov.io/gh/vhexl/c_common_template)
 
-# C Common Template
-C project template for my self.
+C project template for myself.
 
-## Requirement
-+ python 3.10+
-+ cmake 3.20+
-+ vscode
-+ vscode extension: C/C++, CMake Tools, CMake
+## Requirements
+
++ Python 3.10+
++ CMake 3.20+
++ VS Code
++ VS Code Extensions:
+  + C/C++
+  + CMake Tools
+  + CMake
 
 ## Usage
+
 1. Clone this repository
 2. Run setup environment script
     + For Windows run `./tools/setup/setup.bat` or `./tools/setup/setup.ps1`

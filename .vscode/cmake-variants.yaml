@@ -9,16 +9,17 @@ buildType:
       short: Release
       long: Optimize generated code
       buildType: Release
-converage:
-  default: no_converage
+coverage:
+  default: no_coverage
   choices:
-    no_converage:
+    no_coverage:
       short: No coverage
       long: No coverage
-    converage:
+    coverage:
       short: Coverage(Only GCC)
       long: Coverage(Only GCC)
       settings:
-        CMAKE_CXX_FLAGS: "-g -O0 --coverage -ftest-coverage -fprofile-arcs -fprofile-exclude-files=./tests/*"
-        CMAKE_C_FLAGS: "-g -O0 --coverage -ftest-coverage -fprofile-arcs -fprofile-exclude-files=./tests/*"
+        CMAKE_CXX_FLAGS: "-g -O0 --coverage -fno-inline -fno-eliminate-unused-debug-types -fno-optimize-sibling-calls"
+        CMAKE_C_FLAGS: "-g -O0 --coverage -fno-inline -fno-eliminate-unused-debug-types -fno-optimize-sibling-calls"
         CMAKE_EXE_LINKER_FLAGS: "--coverage"
+        CMAKE_SHARED_LINKER_FLAGS: "--coverage"

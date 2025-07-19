@@ -16,4 +16,4 @@ target_include_directories(library_template PUBLIC ${HEADER_FILE_ALL}/)
 # Executable
 # add_executable(executable_template ${SOURCE_FILE_ALL})
 
-add_dependencies(library_template generate_config)
+add_dependencies(library_template config)

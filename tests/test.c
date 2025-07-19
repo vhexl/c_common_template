@@ -3,9 +3,9 @@
  * @author vhexl (visualHex@outlook.com)
  * @brief
  * @version 0.1
- * @date 2024-12-29
+ * @date 2025-07-19
  *
- * SPDX-FileCopyrightText: Copyright (c) 2024
+ * SPDX-FileCopyrightText: Copyright (c) 2025
  * SPDX-License-Identifier: Apache-2.0
  *
  */

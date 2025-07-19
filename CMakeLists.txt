@@ -23,18 +23,20 @@ if(CMAKE_C_COMPILER_ID MATCHES "MSVC")
     add_compile_options(/wd5045)
 endif()
 
-add_custom_command(
-    OUTPUT ${ROOT_DIR}/.config
+add_custom_target(
+    config ALL
     COMMAND ${Python3_EXECUTABLE} ${TOOLS_DIR}/kconfig/kconfig.py
     WORKING_DIRECTORY ${ROOT_DIR}
-    DEPENDS ${ROOT_DIR}/Kconfig ${TOOLS_DIR}/kconfig/kconfig.py
+    DEPENDS ${ROOT_DIR}/.config
+    COMMENT "Generating configuration header"
 )
 
 add_custom_target(
-    generate_config ALL
-    COMMAND ${Python3_EXECUTABLE} ${TOOLS_DIR}/kconfig/kconfig.py
+    coverage
+    COMMAND ${CMAKE_COMMAND} -E remove -f ${BUILD_DIR}/coverage.*
+    COMMAND ${Python3_EXECUTABLE} -m gcovr
     WORKING_DIRECTORY ${ROOT_DIR}
-    DEPENDS ${ROOT_DIR}/.config ${TOOLS_DIR}/kconfig/kconfig.py
+    COMMENT "Generating code coverage report"
 )
 
 # add source directory
